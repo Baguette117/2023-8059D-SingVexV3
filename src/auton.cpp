@@ -16,13 +16,13 @@ bool voltControl = false, targReach = false;
 double targLeft = 0, targRight = 0, errLeft, errRight, prevErrLeft = 0, prevErrRight = 0, derivLeft, derivRight;
 
 void autonPID(void *ignore){
-    leftFront.tare_position();
-    rightBack.tare_position();
+    leftMid.tare_position();
+    rightMid.tare_position();
 
     while (true) {
         if (!voltControl){
-            errLeft = targLeft - leftFront.get_position();
-            errRight = targRight - rightFront.get_position();
+            errLeft = targLeft - leftMid.get_position();
+            errRight = targRight - rightMid.get_position();
 
             derivLeft = prevErrLeft - errLeft;
             derivRight = prevErrRight - errRight;
@@ -55,7 +55,7 @@ void move(double inches, int time = 0){
     delay(500);
 
     if (time != 0){
-        printf("delaying %d", time);
+        printf("Delaying %d", time);
         delay(time - 500);
     } else {
         while (!targReach) {
@@ -75,7 +75,7 @@ void turn(double degrees, int time = 0){
     delay(500);
 
     if (time != 0){
-        printf("delaying %d", time);
+        printf("Delaying %d", time);
         delay(time - 500);
     } else {
         while (!targReach) {
