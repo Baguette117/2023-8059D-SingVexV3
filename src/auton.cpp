@@ -1,38 +1,44 @@
 #include "main.h"
-#define akp 1.2
-#define akd 2.4
+#include "pros/motors.h"
+#include <algorithm>
+#define akp 2
+#define akd 2
 #define akt 2.5 //Degrees of wheel turn to turn base 1 degree
 #define akm 22.9183118053 //Degrees of wheel turn to 1 inch
 
-Motor leftFront (leftFrontPort, MOTOR_GEAR_GREEN, false, MOTOR_ENCODER_DEGREES);
-Motor leftMid (leftMidPort, MOTOR_GEAR_GREEN, false, MOTOR_ENCODER_DEGREES);
-Motor leftBack (leftBackPort, MOTOR_GEAR_GREEN, false, MOTOR_ENCODER_DEGREES);
-Motor rightFront (rightFrontPort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
-Motor rightMid (rightMidPort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
-Motor rightBack (rightBackPort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
+Motor leftFront (leftFrontPort, MOTOR_GEAR_BLUE, false, MOTOR_ENCODER_DEGREES);
+Motor leftMid (leftMidPort, MOTOR_GEAR_BLUE, false, MOTOR_ENCODER_DEGREES);
+Motor leftBack (leftBackPort, MOTOR_GEAR_BLUE, false, MOTOR_ENCODER_DEGREES);
+Motor rightFront (rightFrontPort, MOTOR_GEAR_BLUE, true, MOTOR_ENCODER_DEGREES);
+Motor rightMid (rightMidPort, MOTOR_GEAR_BLUE, true, MOTOR_ENCODER_DEGREES);
+Motor rightBack (rightBackPort, MOTOR_GEAR_BLUE, true, MOTOR_ENCODER_DEGREES);
 Motor intake (intakePort, MOTOR_GEAR_BLUE, true, MOTOR_ENCODER_DEGREES);
 
 bool voltControl = false, targReach = false;
-double targLeft = 0, targRight = 0, errLeft, errRight, prevErrLeft = 0, prevErrRight = 0, derivLeft, derivRight;
+double targLeft = 0, targRight = 0, errLeft, errRight, prevErrLeft = 0, prevErrRight = 0, derivLeft, derivRight, left, right;
 
 void autonPID(void *ignore){
     leftMid.tare_position();
-    rightMid.tare_position();
+    rightBack.tare_position();
 
     while (true) {
         if (!voltControl){
             errLeft = targLeft - leftMid.get_position();
-            errRight = targRight - rightMid.get_position();
+            errRight = targRight - rightBack.get_position();
 
-            derivLeft = prevErrLeft - errLeft;
-            derivRight = prevErrRight - errRight;
+            derivLeft = errLeft - prevErrLeft;
+            derivRight = errRight - prevErrRight;
 
-            leftFront.move(errLeft*akp + derivLeft*akd);
-            leftMid.move(errLeft*akp + derivLeft*akd);
-            leftBack.move(errLeft*akp + derivLeft*akd);
-            rightFront.move(errRight*akp + derivRight*akd);
-            rightMid.move(errRight*akp + derivRight*akd);
-            rightBack.move(errRight*akp + derivRight*akd);
+
+            left = ((errLeft*akp*1.05 + derivLeft*akd) < 0)? std::max(errLeft*akp*1.05 + derivLeft*akd, (double)-70) : std::min(errLeft*akp*1.05 + derivLeft*akd, (double)70);
+            right = ((errRight*akp + derivRight*akd) < 0)? std::max(errRight*akp + derivRight*akd, (double)-70) : std::min(errRight*akp + derivRight*akd, (double)70);
+
+            leftFront.move(left);
+            leftMid.move(left);
+            leftBack.move(left);
+            rightFront.move(right);
+            rightMid.move(right);
+            rightBack.move(right);
 
             prevErrLeft = errLeft;
             prevErrRight = errRight;
