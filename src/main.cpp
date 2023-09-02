@@ -15,12 +15,12 @@ void on_center_button() {}
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	Motor leftFront (leftFrontPort, MOTOR_GEAR_GREEN, false, MOTOR_ENCODER_DEGREES);
-	Motor leftMid (leftMidPort, MOTOR_GEAR_GREEN, false, MOTOR_ENCODER_DEGREES);
-	Motor leftBack (leftBackPort, MOTOR_GEAR_GREEN, false, MOTOR_ENCODER_DEGREES);
-	Motor rightFront (rightFrontPort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
-	Motor rightMid (rightMidPort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
-	Motor rightBack (rightBackPort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
+	Motor leftFront (leftFrontPort, MOTOR_GEAR_BLUE, false, MOTOR_ENCODER_DEGREES);
+	Motor leftMid (leftMidPort, MOTOR_GEAR_BLUE, false, MOTOR_ENCODER_DEGREES);
+	Motor leftBack (leftBackPort, MOTOR_GEAR_BLUE, false, MOTOR_ENCODER_DEGREES);
+	Motor rightFront (rightFrontPort, MOTOR_GEAR_BLUE, true, MOTOR_ENCODER_DEGREES);
+	Motor rightMid (rightMidPort, MOTOR_GEAR_BLUE, true, MOTOR_ENCODER_DEGREES);
+	Motor rightBack (rightBackPort, MOTOR_GEAR_BLUE, true, MOTOR_ENCODER_DEGREES);
 	Motor intake (intakePort, MOTOR_GEAR_BLUE, true, MOTOR_ENCODER_DEGREES);
 	Controller master (CONTROLLER_MASTER);
 
@@ -57,7 +57,8 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	calibration(pathEnum_All);
+	// calibration(pathEnum_MOVE);
+	path1();
 }
 
 /**
