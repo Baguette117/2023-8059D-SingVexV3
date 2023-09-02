@@ -1,9 +1,9 @@
-#define leftFrontPort 0
-#define leftMidPort 0
-#define leftBackPort 0
-#define rightFrontPort 0
-#define rightMidPort 0
-#define rightBackPort 0
-#define cataPort 0
+#define leftFrontPort 8
+#define leftMidPort 9
+#define leftBackPort 10
+#define rightFrontPort 7
+#define rightMidPort 6
+#define rightBackPort 5
+#define cataPort 11
 #define intakePort 0
 #define rotationPort 0
