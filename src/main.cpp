@@ -57,7 +57,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	// calibration(pathEnum_MOVE);
+	// calibration(pathEnum_All);
 	path1();
 }
 
@@ -84,6 +84,13 @@ void opcontrol() {
 	Motor intake (intakePort, true);
 	Controller master (CONTROLLER_MASTER);
 
+	leftFront.set_brake_mode(MOTOR_BRAKE_HOLD);
+	leftMid.set_brake_mode(MOTOR_BRAKE_HOLD);
+	leftBack.set_brake_mode(MOTOR_BRAKE_HOLD);
+	rightFront.set_brake_mode(MOTOR_BRAKE_HOLD);
+	rightMid.set_brake_mode(MOTOR_BRAKE_HOLD);
+	rightBack.set_brake_mode(MOTOR_BRAKE_HOLD);
+
 	bool invert = false;
 	double left, right;
 
@@ -96,25 +103,25 @@ void opcontrol() {
 		}
 
 		if (invert){
-			leftFront.move(-right);
-			leftMid.move(-right);
-			leftBack.move(-right);
+			leftFront.move(-right*1.02);
+			leftMid.move(-right*1.02);
+			leftBack.move(-right*1.02);
 			rightFront.move(-left);
 			rightMid.move(-left);
 			rightBack.move(-left);
 		} else {
-			leftFront.move(left);
-			leftMid.move(left);
-			leftBack.move(left);
+			leftFront.move(left*1.02);
+			leftMid.move(left*1.02);
+			leftBack.move(left*1.02);
 			rightFront.move(right);
 			rightMid.move(right);
 			rightBack.move(right);
 		}
 
 		if (master.get_digital(DIGITAL_L1)){
-			intake.move(127);
-		} else if (master.get_digital(DIGITAL_L2)){
 			intake.move(-127);
+		} else if (master.get_digital(DIGITAL_L2)){
+			intake.move(127);
 		} else {
 			intake.move(0);
 		}
