@@ -29,9 +29,19 @@ void autonPID(void *ignore){
             derivLeft = errLeft - prevErrLeft;
             derivRight = errRight - prevErrRight;
 
+            left = errLeft*akp + derivLeft*akd;
+            if (left < 0){
+                left = std::max(left, (double)-70);
+            } else {
+                left = std::min(left, (double)70);
+            }
 
-            left = ((errLeft*akp*1.05 + derivLeft*akd) < 0)? std::max(errLeft*akp*1.05 + derivLeft*akd, (double)-70) : std::min(errLeft*akp*1.05 + derivLeft*akd, (double)70);
-            right = ((errRight*akp + derivRight*akd) < 0)? std::max(errRight*akp + derivRight*akd, (double)-70) : std::min(errRight*akp + derivRight*akd, (double)70);
+            right = errRight*akp + derivRight*akd;
+            if (right < 0){
+                right = std::max(right, (double)-70);
+            } else {
+                right = std::min(right, (double)70);
+            }
 
             leftFront.move(left);
             leftMid.move(left);
