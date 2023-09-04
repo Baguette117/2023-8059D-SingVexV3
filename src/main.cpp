@@ -98,6 +98,7 @@ void opcontrol() {
 		if (invert){
 			leftFront.move(-right);
 			leftMid.move(-right);
+			leftBack.move(-right);
 			rightFront.move(-left);
 			rightMid.move(-left);
 			rightBack.move(-left);

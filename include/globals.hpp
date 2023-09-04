@@ -5,5 +5,5 @@
 #define rightMidPort 6
 #define rightBackPort 5
 #define cataPort 11
-#define intakePort 0
+#define intakePort 1
 #define rotationPort 0
