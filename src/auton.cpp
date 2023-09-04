@@ -3,7 +3,7 @@
 #include <algorithm>
 #define akp 2
 #define akd 2
-#define akt 2.5 //Degrees of wheel turn to turn base 1 degree
+#define akt 3.00196850394 //Degrees of wheel turn to turn base 1 degree
 #define akm 22.9183118053 //Degrees of wheel turn to 1 inch
 
 Motor leftFront (leftFrontPort, MOTOR_GEAR_BLUE, false, MOTOR_ENCODER_DEGREES);
@@ -31,9 +31,9 @@ void autonPID(void *ignore){
 
             left = errLeft*akp + derivLeft*akd;
             if (left < 0){
-                left = std::max(left, (double)-70);
+                left = std::max(left, (double)-70)*1.02;
             } else {
-                left = std::min(left, (double)70);
+                left = std::min(left, (double)70)*1.02;
             }
 
             right = errRight*akp + derivRight*akd;
