@@ -15,13 +15,13 @@ void on_center_button() {}
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	Motor leftFront (leftFrontPort, MOTOR_GEAR_BLUE, false, MOTOR_ENCODER_DEGREES);
-	Motor leftMid (leftMidPort, MOTOR_GEAR_BLUE, false, MOTOR_ENCODER_DEGREES);
-	Motor leftBack (leftBackPort, MOTOR_GEAR_BLUE, false, MOTOR_ENCODER_DEGREES);
-	Motor rightFront (rightFrontPort, MOTOR_GEAR_BLUE, true, MOTOR_ENCODER_DEGREES);
-	Motor rightMid (rightMidPort, MOTOR_GEAR_BLUE, true, MOTOR_ENCODER_DEGREES);
-	Motor rightBack (rightBackPort, MOTOR_GEAR_BLUE, true, MOTOR_ENCODER_DEGREES);
-	Motor intake (intakePort, MOTOR_GEAR_BLUE, true, MOTOR_ENCODER_DEGREES);
+	Motor leftFront (leftFrontPort, MOTOR_GEAR_GREEN, false, MOTOR_ENCODER_DEGREES);
+	Motor leftMid (leftMidPort, MOTOR_GEAR_GREEN, false, MOTOR_ENCODER_DEGREES);
+	Motor leftBack (leftBackPort, MOTOR_GEAR_GREEN, false, MOTOR_ENCODER_DEGREES);
+	Motor rightFront (rightFrontPort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
+	Motor rightMid (rightMidPort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
+	Motor rightBack (rightBackPort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
+	Motor intake (intakePort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
 	Controller master (CONTROLLER_MASTER);
 
 	Task cataPIDTask (cataPID, (void*)"BALLS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "cataPIDTask");
