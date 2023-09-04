@@ -72,7 +72,7 @@ void move(double inches, int time = 0){
 
     if (time != 0){
         printf("Delaying %d", time);
-        delay(time - 500);
+        delay(time - 1500);
     } else {
         while (!targReach) {
             printf("Moving\n");
@@ -92,7 +92,7 @@ void turn(double degrees, int time = 0){
 
     if (time != 0){
         printf("Delaying %d", time);
-        delay(time - 500);
+        delay(time - 1500);
     } else {
         while (!targReach) {
             printf("Turning\n");
