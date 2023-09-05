@@ -7,3 +7,4 @@ typedef enum pathEnum {
 void autonPID(void *ignore);
 void calibration(pathEnumT path);
 void path1();
+void singleShot();

@@ -21,7 +21,7 @@ void initialize() {
 	Motor rightFront (rightFrontPort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
 	Motor rightMid (rightMidPort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
 	Motor rightBack (rightBackPort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
-	Motor intake (intakePort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
+	Motor intake (intakePort, MOTOR_GEAR_GREEN, false, MOTOR_ENCODER_DEGREES);
 	Controller master (CONTROLLER_MASTER);
 
 	Task cataPIDTask (cataPID, (void*)"BALLS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "cataPIDTask");
@@ -57,7 +57,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	// calibration(pathEnum_All);
+	// calibration(pathEnum_MOVE);
 	path1();
 }
 
@@ -77,19 +77,19 @@ void autonomous() {
 void opcontrol() {
 	Motor leftFront (leftFrontPort, false);
 	Motor leftMid (leftMidPort, false);
-	Motor leftBack (leftMidPort,  false);
+	Motor leftBack (leftBackPort,  false);
 	Motor rightFront (rightFrontPort,  true);
 	Motor rightMid (rightMidPort,  true);
 	Motor rightBack (rightBackPort, true);
-	Motor intake (intakePort, true);
+	Motor intake (intakePort, false);
 	Controller master (CONTROLLER_MASTER);
 
-	leftFront.set_brake_mode(MOTOR_BRAKE_HOLD);
-	leftMid.set_brake_mode(MOTOR_BRAKE_HOLD);
-	leftBack.set_brake_mode(MOTOR_BRAKE_HOLD);
-	rightFront.set_brake_mode(MOTOR_BRAKE_HOLD);
-	rightMid.set_brake_mode(MOTOR_BRAKE_HOLD);
-	rightBack.set_brake_mode(MOTOR_BRAKE_HOLD);
+	leftFront.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	leftMid.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	leftBack.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	rightFront.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	rightMid.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	rightBack.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
 	bool invert = false;
 	double left, right;
