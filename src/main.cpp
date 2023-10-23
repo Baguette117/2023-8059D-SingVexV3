@@ -82,6 +82,7 @@ void opcontrol() {
 	Motor rightMid (rightMidPort,  true);
 	Motor rightBack (rightBackPort, true);
 	Motor intake (intakePort, false);
+	ADIDigitalOut elev(elevPort, LOW);
 	Controller master (CONTROLLER_MASTER);
 
 	leftFront.set_brake_mode(MOTOR_BRAKE_BRAKE);
@@ -91,7 +92,7 @@ void opcontrol() {
 	rightMid.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	rightBack.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
-	bool invert = false;
+	bool invert = false, elevState = false;
 	double left, right;
 
 	while (true) {
@@ -126,6 +127,11 @@ void opcontrol() {
 			intake.move(0);
 		}
 		
+		if (master.get_digital_new_press(DIGITAL_UP)){
+			elevState = !elevState;
+			elev.set_value(elevState);
+		}
+
 		delay(20);
 	}
 }

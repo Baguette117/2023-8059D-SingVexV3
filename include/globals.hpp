@@ -7,3 +7,4 @@
 #define cataPort 11
 #define intakePort 12
 #define rotationPort 0
+#define elevPort 'A'
