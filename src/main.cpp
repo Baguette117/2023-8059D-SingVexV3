@@ -127,9 +127,10 @@ void opcontrol() {
 			intake.move(0);
 		}
 		
-		if (master.get_digital_new_press(DIGITAL_UP)){
+		if (master.get_digital_new_press(DIGITAL_DOWN)){
 			elevState = !elevState;
 			elev.set_value(elevState);
+			printf("elevState: %d\n", elevState);
 		}
 
 		delay(20);

@@ -1,4 +1,4 @@
-#define leftFrontPort 9
+#define leftFrontPort 13
 #define leftMidPort 1
 #define leftBackPort 10
 #define rightFrontPort 19
@@ -7,4 +7,4 @@
 #define cataPort 11
 #define intakePort 12
 #define rotationPort 0
-#define elevPort 'A'
+#define elevPort 'H'
