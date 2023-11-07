@@ -82,7 +82,7 @@ void opcontrol() {
 	Motor rightMid (rightMidPort,  true);
 	Motor rightBack (rightBackPort, true);
 	Motor intake (intakePort, false);
-	ADIDigitalOut elev(elevPort, LOW);
+	ADIDigitalOut wing(wingPort, LOW);
 	Controller master (CONTROLLER_MASTER);
 
 	leftFront.set_brake_mode(MOTOR_BRAKE_BRAKE);
@@ -92,7 +92,7 @@ void opcontrol() {
 	rightMid.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	rightBack.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
-	bool invert = false, elevState = false;
+	bool invert = false, wingState = false;
 	double left, right;
 
 	while (true) {
@@ -128,9 +128,9 @@ void opcontrol() {
 		}
 		
 		if (master.get_digital_new_press(DIGITAL_DOWN)){
-			elevState = !elevState;
-			elev.set_value(elevState);
-			printf("elevState: %d\n", elevState);
+			wingState = !wingState;
+			wing.set_value(wingState);
+			printf("wingState: %d\n", wingState);
 		}
 
 		delay(20);
