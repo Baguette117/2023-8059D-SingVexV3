@@ -1,2 +1,3 @@
 void cataPID(void *ignore);
-void shoot();
+extern bool shoot;
+extern double cataTarg;

@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "2023 8059E SingNats",
+    "project_name": "2023 8059D SingEvent",
     "target": "v5",
     "templates": {
       "kernel": {

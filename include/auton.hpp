@@ -4,7 +4,10 @@ typedef enum pathEnum {
     pathEnum_All = 2,
 } pathEnumT;
 
+extern bool auton;
 void autonPID(void *ignore);
 void calibration(pathEnumT path);
-void path1();
+void preload();
+void matchload();
+void full();
 void singleShot();

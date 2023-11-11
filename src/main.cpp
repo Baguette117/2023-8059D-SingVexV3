@@ -22,9 +22,12 @@ void initialize() {
 	Motor rightMid (rightMidPort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
 	Motor rightBack (rightBackPort, MOTOR_GEAR_GREEN, true, MOTOR_ENCODER_DEGREES);
 	Motor intake (intakePort, MOTOR_GEAR_GREEN, false, MOTOR_ENCODER_DEGREES);
+    Motor cata (cataPort, MOTOR_GEAR_RED, true, MOTOR_ENCODER_DEGREES);
+	ADIDigitalOut wing(wingPort, false);
+	ADIDigitalOut grabber(grabberPort, false);
 	Controller master (CONTROLLER_MASTER);
 
-	Task cataPIDTask (cataPID, (void*)"BALLS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "cataPIDTask");
+	// Task cataPIDTask (cataPID, (void*)"BALLS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "cataPIDTask");
 }
 
 /**
@@ -58,7 +61,7 @@ void competition_initialize() {}
  */
 void autonomous() {
 	// calibration(pathEnum_MOVE);
-	path1();
+	preload();
 }
 
 /**
@@ -75,6 +78,7 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	auton = false;
 	Motor leftFront (leftFrontPort, false);
 	Motor leftMid (leftMidPort, false);
 	Motor leftBack (leftBackPort,  false);
@@ -82,7 +86,9 @@ void opcontrol() {
 	Motor rightMid (rightMidPort,  true);
 	Motor rightBack (rightBackPort, true);
 	Motor intake (intakePort, false);
-	ADIDigitalOut wing(wingPort, LOW);
+    Motor cata (cataPort, true);
+	ADIDigitalOut wing(wingPort, false);
+	ADIDigitalOut grabber(grabberPort, false);
 	Controller master (CONTROLLER_MASTER);
 
 	leftFront.set_brake_mode(MOTOR_BRAKE_BRAKE);
@@ -92,7 +98,7 @@ void opcontrol() {
 	rightMid.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	rightBack.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
-	bool invert = false, wingState = false;
+	bool fast = false, invert = false, wingState = false, grabberState = false;
 	double left, right;
 
 	while (true) {
@@ -104,19 +110,37 @@ void opcontrol() {
 		}
 
 		if (invert){
-			leftFront.move(-right*1.02);
-			leftMid.move(-right*1.02);
-			leftBack.move(-right*1.02);
-			rightFront.move(-left);
-			rightMid.move(-left);
-			rightBack.move(-left);
+			if (fast){
+				leftFront.move(-right*1.27);
+				leftMid.move(-right*1.27);
+				leftBack.move(-right*1.27);
+				rightFront.move(-left*1.245);
+				rightMid.move(-left*1.245);
+				rightBack.move(-left*1.245);
+			} else {
+				leftFront.move(-right*1.02);
+				leftMid.move(-right*1.02);
+				leftBack.move(-right*1.02);
+				rightFront.move(-left);
+				rightMid.move(-left);
+				rightBack.move(-left);
+			}
 		} else {
-			leftFront.move(left*1.02);
-			leftMid.move(left*1.02);
-			leftBack.move(left*1.02);
-			rightFront.move(right);
-			rightMid.move(right);
-			rightBack.move(right);
+			if (fast){
+				leftFront.move(left*1.27);
+				leftMid.move(left*1.27);
+				leftBack.move(left*1.27);
+				rightFront.move(right*1.245);
+				rightMid.move(right*1.245);
+				rightBack.move(right*1.245);
+			} else {
+				leftFront.move(left*1.02);
+				leftMid.move(left*1.02);
+				leftBack.move(left*1.02);
+				rightFront.move(right);
+				rightMid.move(right);
+				rightBack.move(right);
+			}
 		}
 
 		if (master.get_digital(DIGITAL_L1)){
@@ -126,11 +150,27 @@ void opcontrol() {
 		} else {
 			intake.move(0);
 		}
+
+		if (master.get_digital(DIGITAL_R1)){
+			cata.move(80);
+		} else {
+			cata.move(0);
+		}
 		
 		if (master.get_digital_new_press(DIGITAL_DOWN)){
 			wingState = !wingState;
 			wing.set_value(wingState);
 			printf("wingState: %d\n", wingState);
+		}
+
+		if (master.get_digital_new_press(DIGITAL_LEFT)){
+			grabberState = !grabberState;
+			grabber.set_value(grabberState);
+			printf("grabberState: %d\n", grabberState);
+		}
+
+		if (master.get_digital_new_press(DIGITAL_B)){
+			fast = !fast;
 		}
 
 		delay(20);
