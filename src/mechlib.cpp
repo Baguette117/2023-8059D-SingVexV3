@@ -12,7 +12,7 @@ void cataPID(void *ignore){
     Rotation rotation (rotationPort);
     Controller master (CONTROLLER_MASTER);
 
-    double power, err, prevErr, deriv;
+    double power, error, preverror, deriv;
     while (true) {
         if (master.get_digital_new_press(DIGITAL_R1) || shoot == true){
             cata.move(127);
@@ -22,18 +22,18 @@ void cataPID(void *ignore){
         } else if (master.get_digital(DIGITAL_R2)){
             cata.move(50);
         } else {
-            err = cataTarg - rotation.get_position();
-            deriv = prevErr - err;
+            error = cataTarg - rotation.get_position();
+            deriv = preverror - error;
 
-            power = err*kp + deriv*kd;
+            power = error*kp + deriv*kd;
             if (power < 15){
                 power = 0;
             }
 
             cata.move(power);
-            printf("err: %f power: %f rotationSensor: %d\n", err, power, rotation.get_position());
+            printf("error: %f power: %f rotationSensor: %d\n", error, power, rotation.get_position());
 
-            prevErr = err;
+            preverror = error;
         }
 
         // if (master.get_digital_new_press(DIGITAL_R1) || fire == true){
@@ -45,8 +45,8 @@ void cataPID(void *ignore){
         //     cata.move(70);
         //     cataTarg = cata.get_position();
         // } else {
-        //     err = cataTarg - cata.get_position();
-        //     cata.move(err*kp);
+        //     error = cataTarg - cata.get_position();
+        //     cata.move(error*kp);
         // }
 
         

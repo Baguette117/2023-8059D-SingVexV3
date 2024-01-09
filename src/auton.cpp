@@ -18,7 +18,7 @@ ADIDigitalOut wing(wingPort, false);
 ADIDigitalOut grabber(grabberPort, false);
 
 bool voltControl = false, targReach = false, auton = true;
-double speedCap = 0, targLeft = 0, targRight = 0, errLeft, errRight, prevErrLeft = 0, prevErrRight = 0, derivLeft, derivRight, left, right;
+double speedCap = 0, targLeft = 0, targRight = 0, errorLeft, errorRight, preverrorLeft = 0, preverrorRight = 0, derivLeft, derivRight, left, right;
 
 void autonPID(void *ignore){
     leftMid.tare_position();
@@ -26,25 +26,25 @@ void autonPID(void *ignore){
 
     while (auton) {
         if (!voltControl){
-            errLeft = targLeft - leftMid.get_position();
-            errRight = targRight - rightBack.get_position();
+            errorLeft = targLeft - leftMid.get_position();
+            errorRight = targRight - rightBack.get_position();
 
-            derivLeft = errLeft - prevErrLeft;
-            derivRight = errRight - prevErrRight;
+            derivLeft = errorLeft - preverrorLeft;
+            derivRight = errorRight - preverrorRight;
 
-            left = errLeft*akp + derivLeft*akd;
-            right = errRight*akp + derivRight*akd;
+            left = errorLeft*akp + derivLeft*akd;
+            right = errorRight*akp + derivRight*akd;
             if (speedCap != 0){
-                if (left < 0){
-                    left = std::max(left, -speedCap);
-                } else {
-                    left = std::min(left, speedCap);
+                if (left < -speedCap){
+                    left = -speedCap;
+                } else if (left > speedCap){
+                    left = speedCap;
                 }
 
-                if (right < 0){
-                    right = std::max(right, -speedCap);
-                } else {
-                    right = std::min(right, speedCap);
+                if (right < -speedCap){
+                    right = -speedCap;
+                } else if (right > speedCap) {
+                    right = speedCap;
                 }
             }
 
@@ -55,15 +55,15 @@ void autonPID(void *ignore){
             rightMid.move(right);
             rightBack.move(right);
 
-            prevErrLeft = errLeft;
-            prevErrRight = errRight;
+            preverrorLeft = errorLeft;
+            preverrorRight = errorRight;
         } else {
             delay(5);
         }
 
-        targReach = -7.5 < errLeft && errLeft < 7.5 && -7.5 < errRight && errRight < 7.5;
+        targReach = fabs(errorLeft) < 7.5 && fabs(errorRight) < 7.5;
 
-        printf("posLeft: %.2f posRight: %f targLeft: %f targRight: %f, errLeft: %f, errRight: %f\n", leftFront.get_position(), rightFront.get_position(), targLeft, targRight, errLeft, errRight);
+        printf("posLeft: %.2f posRight: %f targLeft: %f targRight: %f, errorLeft: %f, errorRight: %f\n", leftFront.get_position(), rightFront.get_position(), targLeft, targRight, errorLeft, errorRight);
         delay(15);
     }
 }
